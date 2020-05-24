@@ -61,6 +61,9 @@
 </template>
 
 <script>
+import MathTool from '../utils/MathTool'
+let myMath = new MathTool()
+
 /* eslint-disable */
   export default {
     name: 'Calculator',
@@ -74,15 +77,14 @@
         this.expression = ''
       },
       backspace () {
-        this.expression = this.expression.slice(0, -1)
+        this.expression = parseFloat(this.expression.toString().slice(0, -1))
       },
       append (e) {
         this.expression += e
       },
-      equal(){
-
+      equal () {
+        this.expression = myMath.eval(this.expression)
       }
-
     }
   }
 </script>
