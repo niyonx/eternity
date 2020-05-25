@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>eternity</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>ETERNITY CALCULATOR</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    #app{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #eee;
+    }
+
+    /*Use media query for rem*/
+    @media (min-width: 320px) {
+      html {
+        font-size: 13px;
+      }
+    }
+
+    @media (min-width: 375px) {
+      html {
+        font-size: 16px;
+      }
+    }
+
+    @media (min-width: 440px) {
+      html {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
 </html>
