@@ -8,52 +8,52 @@
 
     <div class="calculator-keys">
       <div class="row">
-        <button class="calculator-btn" @click="append('sin(')">sin</button>
-        <button class="calculator-btn" @click="append('sinh(')">sinh</button>
-        <button class="calculator-btn" @click="append('ln(')">ln</button>
-        <button class="calculator-btn" @click="append('10power(')">10<sup>x</sup></button>
+        <button class="calculator-btn" @click="appendOp('sin(')">sin</button>
+        <button class="calculator-btn" @click="appendOp('tenPower(')">10<sup>x</sup></button>
+        <button class="calculator-btn" @click="appendOp('MAD(')">MAD</button>
+        <button class="calculator-btn" @click="appendOp('σ(')">σ</button>
       </div>
 
       <div class="row">
-        <button class="calculator-btn" @click="append('epower(')">e<sup>x</sup></button>
-        <button class="calculator-btn" @click="append('power(')">x<sup>y</sup></button>
-        <button class="calculator-btn" @click="append('e')">e</button>
-        <button class="calculator-btn" @click="append('π')">π</button>
+        <button class="calculator-btn" @click="appendOp('ePower(')">e<sup>x</sup></button>
+        <button class="calculator-btn" @click="appendOp('power(')">x<sup>y</sup></button>
+        <button class="calculator-btn" @click="appendNum('e')">e</button>
+        <button class="calculator-btn" @click="appendNum('π')">π</button>
       </div>
       <div class="row">
-        <button class="calculator-btn" @click="append('%')">%</button>
-        <button class="calculator-btn" @click="append('deg')">deg</button>
-        <button class="calculator-btn" @click="append('(')">(</button>
-        <button class="calculator-btn" @click="append(')')">)</button>
+        <button class="calculator-btn" @click="changeAngleMode">{{angleMode}}</button>
+        <button class="calculator-btn" @click="appendOp(',')">,</button>
+        <button class="calculator-btn" @click="appendNum('(')">(</button>
+        <button class="calculator-btn" @click="appendNum(')')">)</button>
       </div>
       <div class="row">
-        <button class="calculator-btn" @click="append('*')">*</button>
-        <button class="calculator-btn" @click="append('/')">/</button>
+        <button class="calculator-btn" @click="appendOp('*')">*</button>
+        <button class="calculator-btn" @click="appendOp('/')">/</button>
         <button class="calculator-btn" @click="backspace">←</button>
         <button class="calculator-btn" @click="clear">C</button>
       </div>
       <div class="row">
-        <button class="calculator-btn num-btn" @click="append('7')">7</button>
-        <button class="calculator-btn num-btn" @click="append('8')">8</button>
-        <button class="calculator-btn num-btn" @click="append('9')">9</button>
-        <button class="calculator-btn" @click="append('-')">-</button>
+        <button class="calculator-btn num-btn" @click="appendNum('7')">7</button>
+        <button class="calculator-btn num-btn" @click="appendNum('8')">8</button>
+        <button class="calculator-btn num-btn" @click="appendNum('9')">9</button>
+        <button class="calculator-btn" @click="appendOp('-')">-</button>
       </div>
       <div class="row">
-        <button class="calculator-btn num-btn" @click="append('4')">4</button>
-        <button class="calculator-btn num-btn" @click="append('5')">5</button>
-        <button class="calculator-btn num-btn" @click="append('6')">6</button>
-        <button class="calculator-btn" @click="append('+')">+</button>
+        <button class="calculator-btn num-btn" @click="appendNum('4')">4</button>
+        <button class="calculator-btn num-btn" @click="appendNum('5')">5</button>
+        <button class="calculator-btn num-btn" @click="appendNum('6')">6</button>
+        <button class="calculator-btn" @click="appendOp('+')">+</button>
       </div>
       <div class="row">
-        <button class="calculator-btn num-btn " @click="append('1')">1</button>
-        <button class="calculator-btn num-btn " @click="append('2')">2</button>
-        <button class="calculator-btn num-btn " @click="append('3')">3</button>
+        <button class="calculator-btn num-btn " @click="appendNum('1')">1</button>
+        <button class="calculator-btn num-btn " @click="appendNum('2')">2</button>
+        <button class="calculator-btn num-btn " @click="appendNum('3')">3</button>
         <button class="calculator-btn eq-btn" @click="equal">=</button>
       </div>
       <div class="row">
-        <button class="calculator-btn num-btn" @click="append('-')">+/-</button>
-        <button class="calculator-btn num-btn" @click="append('0')">0</button>
-        <button class="calculator-btn num-btn" @click="append('.')">.</button>
+        <button class="calculator-btn num-btn" @click="appendNum('-')">+/-</button>
+        <button class="calculator-btn num-btn" @click="appendNum('0')">0</button>
+        <button class="calculator-btn num-btn" @click="appendNum('.')">.</button>
         <button class="calculator-btn notshow"></button>
       </div>
     </div>
@@ -62,14 +62,16 @@
 
 <script>
 import MathTool from '../utils/MathTool'
-let myMath = new MathTool()
+
+const myMath = new MathTool()
 
 /* eslint-disable */
   export default {
     name: 'Calculator',
     data () {
       return {
-        expression: ''
+        expression: '',
+        angleMode : 'deg'
       }
     },
     methods: {
@@ -77,13 +79,38 @@ let myMath = new MathTool()
         this.expression = ''
       },
       backspace () {
-        this.expression = parseFloat(this.expression.toString().slice(0, -1))
+        if (typeof this.expression === typeof 1) {
+          this.expression = ''
+        } else {
+          this.expression = this.expression.toString().slice(0, -1)
+        }
       },
-      append (e) {
-        this.expression += e
+      appendNum (e) {
+        if (typeof this.expression === typeof 1) {
+          this.expression = e
+        } else {
+          this.expression += e
+        }
+      },
+      appendOp (e) {
+          this.expression += e
       },
       equal () {
-        this.expression = myMath.eval(this.expression)
+        try{
+          this.expression = myMath.eval(this.expression, this.angleMode)
+        }catch (e) {
+          this.expression = 'Syntax Error'
+        }
+
+      },
+      changeAngleMode(){
+        if (this.angleMode === 'deg'){
+          this.angleMode = 'rad'
+          myMath.angleMode = 'rad'
+        }else{
+          this.angleMode = 'deg'
+          myMath.angleMode = 'deg'
+        }
       }
     }
   }
@@ -93,39 +120,6 @@ let myMath = new MathTool()
 <style scoped>
   /*@import url("https://fonts.googleapis.com/css?family=Poppins:300,500&display=swap");*/
 
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-
-  /*Use media query for rem*/
-  @media (min-width: 320px) {
-    html {
-      font-size: 14px;
-    }
-  }
-
-  @media (min-width: 375px) {
-    html {
-      font-size: 16px;
-    }
-  }
-
-  @media (min-width: 440px) {
-    html {
-      font-size: 18px;
-    }
-  }
-
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ccc;
-  }
-
   .calculator {
     background: #2E3A52;
     flex: 1;
@@ -133,7 +127,7 @@ let myMath = new MathTool()
     margin: 10px;
     color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px 0.2px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.6);
     position: relative;
     min-width: 280px;
     max-width: 480px;
@@ -145,7 +139,7 @@ let myMath = new MathTool()
   }
 
   .calculator-display {
-    font-size: 2.5rem;
+    font-size: 2rem;
     height: 100px;
     padding: 0 10px;
     background-color: #2E3A52;
