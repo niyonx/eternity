@@ -18,7 +18,7 @@ class MathTool {
     this._initCustomFunction()
   }
 
-  eval (exp) {
+  eval (exp, angleMode) {
     return this.parser.evaluate(exp)
   }
 
