@@ -15,11 +15,12 @@ class MathTool {
   constructor () {
     this.parser = math.parser()
     this.angleMode = 'deg'
+    this.precision = 7.0
     this._initCustomFunction()
   }
 
   eval (exp, angleMode) {
-    return this.parser.evaluate(exp)
+    return Number(this.parser.evaluate(exp).toFixed(this.precision))
   }
 
   //  Add custom operator to our parser
