@@ -5,6 +5,8 @@ import {power} from './functions/power'
 import {sd} from './functions/sd'
 import {sin} from './functions/sin'
 import {tenPower} from './functions/tenPower'
+import {e} from './functions/e'
+import {PI} from './functions/PI'
 
 // `include the math.js library
 const math = require('mathjs')
@@ -48,9 +50,9 @@ class MathTool {
       return sd(...arguments)
     })
 
-    this.parser.set('π', Math.PI)
+    this.parser.set('π', PI)
 
-    this.parser.set('e', math.e)
+    this.parser.set('e', e)
   }
 }
 
