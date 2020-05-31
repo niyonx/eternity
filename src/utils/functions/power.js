@@ -1,6 +1,11 @@
+/* eslint-disable */
 
-export function power (x, y) {
-  // @TODO: Write your code here and return the result
+import BigNumber from 'bignumber.js';
 
-  return 0
+export function power (num, exponent) {
+  let result = new BigNumber(1);
+  for (let i = 1; i <= exponent; ++i) {
+    result = result.multipliedBy(num);
+  }
+  return result;
 }
