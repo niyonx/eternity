@@ -1,4 +1,5 @@
 import power from 'power.js'
+import sqrt from 'sqrt.js'
 
 export function sd () {
 
@@ -17,5 +18,5 @@ export function sd () {
     }
 
     //divide the sum of difference by number of inputs
-    return Math.sqrt(sum/arguments.length)
+    return sqrt(sum/arguments.length)
 }
