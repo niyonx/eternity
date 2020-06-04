@@ -1,4 +1,5 @@
 import {factorial} from './factorial'
+import {power} from './power'
 
 export function ePower (num) {
   let retained = 1
@@ -7,7 +8,7 @@ export function ePower (num) {
   let rounds = 40
 
   for (let i = 1; i <= rounds; i++) {
-    nominator = Math.pow(num, i)
+    nominator = power(num, i)
     denominator = factorial(i)
     retained = retained + nominator / denominator
   }

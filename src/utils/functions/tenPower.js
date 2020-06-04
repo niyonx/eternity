@@ -1,5 +1,5 @@
+import {power} from './power'
 
 export function tenPower (num) {
-  // @TODO: Write your code here and return the result
-  return 0
+  return power(10, num)
 }
