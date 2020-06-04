@@ -1,3 +1,4 @@
+
 export const PI = (function () {
   let x = 2
   let z = 2
@@ -11,3 +12,5 @@ export const PI = (function () {
   }
   return x
 })()
+
+// export const PI = 3.141592653589793

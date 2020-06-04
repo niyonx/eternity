@@ -10,3 +10,5 @@ export const e = (function () {
   }
   return result
 })()
+
+// export const e = 2.718281828459045

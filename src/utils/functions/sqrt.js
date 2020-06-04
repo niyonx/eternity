@@ -1,9 +1,11 @@
+import {abs} from './abs'
 
-
-function sqrt(number) {
-    for (var i = 0; i * i <= number; i++) {
-        if (i * i === number)
-            return i;
-   }
-   return number; // don't know if you should have this line in case nothing found
+export function sqrt (num) {
+  let result = num
+  let last
+  do {
+    last = result
+    result = (result + num / result) / 2
+  } while (abs(result - last) > 0.00000001)
+  return result
 }
