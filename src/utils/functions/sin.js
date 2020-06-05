@@ -3,7 +3,7 @@ import {power} from './power'
 import {PI} from './PI'
 import {abs} from './abs'
 
-export function sin (num, angleMode, rounds = 100) {
+export function sin (num, angleMode, rounds = 40) {
   num = angleMode === 'deg' ? num * (PI / 180.0) : num
   num = abs(num % (2 * PI))
   let retained = 0
