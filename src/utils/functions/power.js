@@ -26,8 +26,8 @@ export function myln (num) {
   let temp = ((num - 1) / (num + 1))
   let result = 0
   for (let i = 1; i < rounds * 2; i += 2) {
-    let j = (2.0 * i) - 1
-    result = result + (j * power(temp, j))
+    let j = 1 / i
+    result = result + (j * power(temp, i))
   }
   return (2.0 * result)
 }
