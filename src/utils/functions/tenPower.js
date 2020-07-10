@@ -1,5 +1,5 @@
-import {power} from './power'
+// import {power} from './power'
 
-export function tenPower (num) {
-  return power(10, num)
-}
+// export function tenPower (num) {
+//   return power(10, num)
+// }
