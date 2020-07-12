@@ -1,6 +1,16 @@
 <template>
-
   <div class="calculator">
+    <!-- <div class="about">
+    <h1>Backend Resources Demo</h1>
+    <p>Click on the links below to fetch data from the Flask server</p>
+    <a href="" @click.prevent="fetchResource">Fetch</a><br/>
+    <a href="" @click.prevent="fetchSecureResource">Fetch Secure Resource</a>
+    <h4>Results</h4>
+    <p v-for="r in resources" :key="r.timestamp">
+      Server Timestamp: {{r.timestamp}}
+    </p>
+    <p>{{error}}</p>
+  </div> -->
     <div class="calculator-bar">
       ETERNITY CALCULATOR
     </div>
@@ -61,9 +71,10 @@
 </template>
 
 <script>
-import MathTool from '../utils/MathTool'
+// import MathTool from '../utils/MathTool'
+import $backend from '../backend'
 
-const myMath = new MathTool()
+// const myMath = new MathTool()
 
 /* eslint-disable */
   export default {
@@ -71,7 +82,9 @@ const myMath = new MathTool()
     data () {
       return {
         expression: '',
-        angleMode : 'deg'
+        angleMode : this.getAngleMode(), // if calculator is refreshed, angleMode is consistent
+        resources: [],
+        error: ''
       }
     },
     methods: {
@@ -97,7 +110,8 @@ const myMath = new MathTool()
       },
       equal () {
         try{
-          this.expression = myMath.eval(this.expression, this.angleMode)
+          // this.expression = myMath.eval(this.expression, this.angleMode)
+          this.evaluate(this.expression)
         }catch (e) {
           this.expression = 'Syntax Error'
         }
@@ -106,11 +120,45 @@ const myMath = new MathTool()
       changeAngleMode(){
         if (this.angleMode === 'deg'){
           this.angleMode = 'rad'
-          myMath.angleMode = 'rad'
+          // myMath.angleMode = 'rad'
         }else{
           this.angleMode = 'deg'
-          myMath.angleMode = 'deg'
+          // myMath.angleMode = 'deg'
         }
+        $backend.changeAngleMode(this.angleMode)
+      },
+      fetchResource () {
+      $backend.fetchResource()
+        .then(responseData => {
+          this.resources.push(responseData)
+        }).catch(error => {
+          this.error = error.message
+        })
+      },
+      fetchSecureResource () {
+        $backend.fetchSecureResource()
+          .then(responseData => {
+            this.resources.push(responseData)
+          }).catch(error => {
+            this.error = error.message
+          })
+      },
+      evaluate (calculation) {
+        $backend.evaluate(calculation)
+          .then(responseData => {
+            this.expression = responseData
+          }).catch(error => {
+            this.error = error.message
+            this.expression = 'Syntax Error'
+          })
+      },
+      getAngleMode(){
+        $backend.getAngleMode()
+          .then(responseData => {
+            this.angleMode = responseData.data
+          }).catch(error => {
+            this.error = error.message
+          })
       }
     }
   }
