@@ -1,16 +1,5 @@
 <template>
   <div class="calculator">
-    <!-- <div class="about">
-    <h1>Backend Resources Demo</h1>
-    <p>Click on the links below to fetch data from the Flask server</p>
-    <a href="" @click.prevent="fetchResource">Fetch</a><br/>
-    <a href="" @click.prevent="fetchSecureResource">Fetch Secure Resource</a>
-    <h4>Results</h4>
-    <p v-for="r in resources" :key="r.timestamp">
-      Server Timestamp: {{r.timestamp}}
-    </p>
-    <p>{{error}}</p>
-  </div> -->
     <div class="calculator-bar">
       ETERNITY CALCULATOR
     </div>
@@ -71,97 +60,74 @@
 </template>
 
 <script>
-// import MathTool from '../utils/MathTool'
 import $backend from '../backend'
 
-// const myMath = new MathTool()
-
-/* eslint-disable */
-  export default {
-    name: 'Calculator',
-    data () {
-      return {
-        expression: '',
-        angleMode : this.getAngleMode(), // if calculator is refreshed, angleMode is consistent
-        resources: [],
-        error: ''
+export default {
+  name: 'Calculator',
+  data () {
+    return {
+      expression: '',
+      angleMode: 'deg',
+      resources: [],
+      error: ''
+    }
+  },
+  methods: {
+    clear () {
+      this.expression = ''
+    },
+    backspace () {
+      if (typeof this.expression === typeof 1) {
+        this.expression = ''
+      } else {
+        this.expression = this.expression.toString().slice(0, -1)
       }
     },
-    methods: {
-      clear () {
-        this.expression = ''
-      },
-      backspace () {
-        if (typeof this.expression === typeof 1) {
-          this.expression = ''
-        } else {
-          this.expression = this.expression.toString().slice(0, -1)
-        }
-      },
-      appendNum (e) {
-        if (typeof this.expression === typeof 1) {
-          this.expression = e
-        } else {
-          this.expression += e
-        }
-      },
-      appendOp (e) {
-          this.expression += e
-      },
-      equal () {
-        try{
-          // this.expression = myMath.eval(this.expression, this.angleMode)
-          this.evaluate(this.expression)
-        }catch (e) {
+    appendNum (e) {
+      if (typeof this.expression === typeof 1) {
+        this.expression = e
+      } else {
+        this.expression += e
+      }
+    },
+    appendOp (e) {
+      this.expression += e
+    },
+    equal () {
+      $backend.evaluate(this.expression, this.angleMode)
+        .then(responseData => {
+          this.expression = responseData
+        }).catch(error => {
+          console.log(error)
+          this.error = error.message
           this.expression = 'Syntax Error'
-        }
-
-      },
-      changeAngleMode(){
-        if (this.angleMode === 'deg'){
-          this.angleMode = 'rad'
-          // myMath.angleMode = 'rad'
-        }else{
-          this.angleMode = 'deg'
-          // myMath.angleMode = 'deg'
-        }
-        $backend.changeAngleMode(this.angleMode)
-      },
-      fetchResource () {
+        })
+    },
+    changeAngleMode () {
+      if (this.angleMode === 'deg') {
+        this.angleMode = 'rad'
+      } else {
+        this.angleMode = 'deg'
+      }
+    },
+    fetchResource () {
       $backend.fetchResource()
         .then(responseData => {
           this.resources.push(responseData)
         }).catch(error => {
           this.error = error.message
         })
-      },
-      fetchSecureResource () {
-        $backend.fetchSecureResource()
-          .then(responseData => {
-            this.resources.push(responseData)
-          }).catch(error => {
-            this.error = error.message
-          })
-      },
-      evaluate (calculation) {
-        $backend.evaluate(calculation)
-          .then(responseData => {
-            this.expression = responseData
-          }).catch(error => {
-            this.error = error.message
-            this.expression = 'Syntax Error'
-          })
-      },
-      getAngleMode(){
-        $backend.getAngleMode()
-          .then(responseData => {
-            this.angleMode = responseData.data
-          }).catch(error => {
-            this.error = error.message
-          })
-      }
+    },
+    fetchSecureResource () {
+      $backend.fetchSecureResource()
+        .then(responseData => {
+          this.resources.push(responseData)
+        }).catch(error => {
+          this.error = error.message
+        })
     }
   }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
