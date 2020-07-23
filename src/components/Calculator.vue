@@ -1,7 +1,7 @@
 <template>
   <div class="calculator">
     <div class="calculator-bar">
-      ETERNITY CALCULATOR
+      ETERNITY SCIENTIFIC CALCULATOR
     </div>
     <div class="calculator-display">{{expression || 0}}</div>
 
@@ -47,87 +47,92 @@
         <button class="calculator-btn num-btn " @click="appendNum('1')">1</button>
         <button class="calculator-btn num-btn " @click="appendNum('2')">2</button>
         <button class="calculator-btn num-btn " @click="appendNum('3')">3</button>
-        <button class="calculator-btn eq-btn" @click="equal">=</button>
+        <button class="calculator-btn" @click="appendNum(ans)">Ans</button>
       </div>
       <div class="row">
         <button class="calculator-btn num-btn" @click="appendNum('-')">+/-</button>
         <button class="calculator-btn num-btn" @click="appendNum('0')">0</button>
         <button class="calculator-btn num-btn" @click="appendNum('.')">.</button>
-        <button class="calculator-btn notshow"></button>
+        <button class="calculator-btn eq-btn" @click="equal">=</button>
+        <!-- <button class="calculator-btn notshow"></button> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// import MathTool from '../utils/MathTool'
 import $backend from '../backend'
 
-export default {
-  name: 'Calculator',
-  data () {
-    return {
-      expression: '',
-      angleMode: 'deg',
-      resources: [],
-      error: ''
-    }
-  },
-  methods: {
-    clear () {
-      this.expression = ''
+/* eslint-disable */
+  export default {
+    name: 'Calculator',
+    data () {
+      return {
+        expression: '',
+        angleMode: 'deg',
+        resources: [],
+        error: '',
+        ans: ''
+      }
     },
-    backspace () {
-      if (typeof this.expression === typeof 1) {
+    methods: {
+      clear () {
         this.expression = ''
-      } else {
-        this.expression = this.expression.toString().slice(0, -1)
+      },
+      backspace () {
+        if (typeof this.expression === typeof 1) {
+          this.expression = ''
+        } else {
+          this.expression = this.expression.toString().slice(0, -1)
+        }
+      },
+      appendNum (e) {
+        if (typeof this.expression === typeof 1) {
+          this.expression = e
+        } else {
+          this.expression += e
+        }
+      },
+      appendOp (e) {
+          this.expression += e
+      },
+      equal () {
+        $backend.evaluate(this.expression, this.angleMode)
+          .then(responseData => {
+            this.expression = responseData;
+            this.ans = this.expression
+          }).catch(error => {
+            console.log(error)
+            this.error = error.message
+            this.expression = 'Syntax Error'
+          })
+      },
+      changeAngleMode () {
+        if (this.angleMode === 'deg') {
+          this.angleMode = 'rad'
+        } else {
+          this.angleMode = 'deg'
+        }
+      },
+      fetchResource () {
+        $backend.fetchResource()
+          .then(responseData => {
+            this.resources.push(responseData)
+          }).catch(error => {
+            this.error = error.message
+          })
+      },
+      fetchSecureResource () {
+        $backend.fetchSecureResource()
+          .then(responseData => {
+            this.resources.push(responseData)
+          }).catch(error => {
+            this.error = error.message
+          })
       }
-    },
-    appendNum (e) {
-      if (typeof this.expression === typeof 1) {
-        this.expression = e
-      } else {
-        this.expression += e
-      }
-    },
-    appendOp (e) {
-      this.expression += e
-    },
-    equal () {
-      $backend.evaluate(this.expression, this.angleMode)
-        .then(responseData => {
-          this.expression = responseData
-        }).catch(error => {
-          console.log(error)
-          this.error = error.message
-          this.expression = 'Syntax Error'
-        })
-    },
-    changeAngleMode () {
-      if (this.angleMode === 'deg') {
-        this.angleMode = 'rad'
-      } else {
-        this.angleMode = 'deg'
-      }
-    },
-    fetchResource () {
-      $backend.fetchResource()
-        .then(responseData => {
-          this.resources.push(responseData)
-        }).catch(error => {
-          this.error = error.message
-        })
-    },
-    fetchSecureResource () {
-      $backend.fetchSecureResource()
-        .then(responseData => {
-          this.resources.push(responseData)
-        }).catch(error => {
-          this.error = error.message
-        })
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -164,9 +169,6 @@ export default {
     overflow: hidden;
   }
 
-  .calculator-keys {
-  }
-
   .calculator-keys .row {
     display: flex;
     height: 60px;
@@ -194,7 +196,7 @@ export default {
     position: relative;
     top: 0;
     left: 0;
-    height: 110px;
+    /*height: 110px;*/
     background-color: #19D5A3;
     color: #212C42
   }
