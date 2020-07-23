@@ -33,17 +33,10 @@ export default {
       .then(response => response.data)
   },
 
-  evaluate (calculation) {
-    calculation = calculation.replace(/[/]/mg, 'divide')
-    return $axios.get(`evaluate/` + calculation)
+  evaluate (expression, mode) {
+    expression = expression.replace(/[/]/mg, 'divide')
+    return $axios.get(`evaluate/${mode}/${expression}`)
       .then(response => response.data)
-  },
-
-  changeAngleMode (mode) {
-    return $axios.post(`angleMode/` + mode)
-  },
-
-  getAngleMode () {
-    return $axios.get(`getAngleMode`)
   }
+
 }

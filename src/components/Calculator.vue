@@ -64,15 +64,13 @@
 // import MathTool from '../utils/MathTool'
 import $backend from '../backend'
 
-// const myMath = new MathTool()
-
 /* eslint-disable */
   export default {
     name: 'Calculator',
     data () {
       return {
         expression: '',
-        angleMode : this.getAngleMode(), // if calculator is refreshed, angleMode is consistent
+        angleMode: 'deg',
         resources: [],
         error: '',
         ans: ''
@@ -100,56 +98,35 @@ import $backend from '../backend'
           this.expression += e
       },
       equal () {
-        try{
-          // this.expression = myMath.eval(this.expression, this.angleMode)
-          console.log(this.expression)
-          this.evaluate(this.expression)
-        }catch (e) {
-          this.expression = 'Syntax Error'
-        }
-
+        $backend.evaluate(this.expression, this.angleMode)
+          .then(responseData => {
+            this.expression = responseData;
+            this.ans = this.expression
+          }).catch(error => {
+            console.log(error)
+            this.error = error.message
+            this.expression = 'Syntax Error'
+          })
       },
-      changeAngleMode(){
-        if (this.angleMode === 'deg'){
+      changeAngleMode () {
+        if (this.angleMode === 'deg') {
           this.angleMode = 'rad'
-          // myMath.angleMode = 'rad'
-        }else{
+        } else {
           this.angleMode = 'deg'
-          // myMath.angleMode = 'deg'
         }
-        $backend.changeAngleMode(this.angleMode)
       },
       fetchResource () {
-      $backend.fetchResource()
-        .then(responseData => {
-          this.resources.push(responseData)
-        }).catch(error => {
-          this.error = error.message
-        })
-      },
-      fetchSecureResource () {
-        $backend.fetchSecureResource()
+        $backend.fetchResource()
           .then(responseData => {
             this.resources.push(responseData)
           }).catch(error => {
             this.error = error.message
           })
       },
-      evaluate (calculation) {
-        console.log(calculation)
-        $backend.evaluate(calculation)
+      fetchSecureResource () {
+        $backend.fetchSecureResource()
           .then(responseData => {
-            this.expression = responseData
-            this.ans = this.expression
-          }).catch(error => {
-            this.error = error.message
-            this.expression = 'Syntax Error'
-          })
-      },
-      getAngleMode(){
-        $backend.getAngleMode()
-          .then(responseData => {
-            this.angleMode = responseData.data
+            this.resources.push(responseData)
           }).catch(error => {
             this.error = error.message
           })
@@ -219,7 +196,7 @@ import $backend from '../backend'
     position: relative;
     top: 0;
     left: 0;
-    /* height: 110px; */
+    /*height: 110px;*/
     background-color: #19D5A3;
     color: #212C42
   }
