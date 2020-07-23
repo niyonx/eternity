@@ -1,18 +1,7 @@
 <template>
   <div class="calculator">
-    <!-- <div class="about">
-    <h1>Backend Resources Demo</h1>
-    <p>Click on the links below to fetch data from the Flask server</p>
-    <a href="" @click.prevent="fetchResource">Fetch</a><br/>
-    <a href="" @click.prevent="fetchSecureResource">Fetch Secure Resource</a>
-    <h4>Results</h4>
-    <p v-for="r in resources" :key="r.timestamp">
-      Server Timestamp: {{r.timestamp}}
-    </p>
-    <p>{{error}}</p>
-  </div> -->
     <div class="calculator-bar">
-      ETERNITY CALCULATOR
+      ETERNITY SCIENTIFIC CALCULATOR
     </div>
     <div class="calculator-display">{{expression || 0}}</div>
 
@@ -58,13 +47,14 @@
         <button class="calculator-btn num-btn " @click="appendNum('1')">1</button>
         <button class="calculator-btn num-btn " @click="appendNum('2')">2</button>
         <button class="calculator-btn num-btn " @click="appendNum('3')">3</button>
-        <button class="calculator-btn eq-btn" @click="equal">=</button>
+        <button class="calculator-btn" @click="appendNum(ans)">Ans</button>
       </div>
       <div class="row">
         <button class="calculator-btn num-btn" @click="appendNum('-')">+/-</button>
         <button class="calculator-btn num-btn" @click="appendNum('0')">0</button>
         <button class="calculator-btn num-btn" @click="appendNum('.')">.</button>
-        <button class="calculator-btn notshow"></button>
+        <button class="calculator-btn eq-btn" @click="equal">=</button>
+        <!-- <button class="calculator-btn notshow"></button> -->
       </div>
     </div>
   </div>
@@ -84,7 +74,8 @@ import $backend from '../backend'
         expression: '',
         angleMode : this.getAngleMode(), // if calculator is refreshed, angleMode is consistent
         resources: [],
-        error: ''
+        error: '',
+        ans: ''
       }
     },
     methods: {
@@ -111,6 +102,7 @@ import $backend from '../backend'
       equal () {
         try{
           // this.expression = myMath.eval(this.expression, this.angleMode)
+          console.log(this.expression)
           this.evaluate(this.expression)
         }catch (e) {
           this.expression = 'Syntax Error'
@@ -144,9 +136,11 @@ import $backend from '../backend'
           })
       },
       evaluate (calculation) {
+        console.log(calculation)
         $backend.evaluate(calculation)
           .then(responseData => {
             this.expression = responseData
+            this.ans = this.expression
           }).catch(error => {
             this.error = error.message
             this.expression = 'Syntax Error'
@@ -198,9 +192,6 @@ import $backend from '../backend'
     overflow: hidden;
   }
 
-  .calculator-keys {
-  }
-
   .calculator-keys .row {
     display: flex;
     height: 60px;
@@ -228,7 +219,7 @@ import $backend from '../backend'
     position: relative;
     top: 0;
     left: 0;
-    height: 110px;
+    /* height: 110px; */
     background-color: #19D5A3;
     color: #212C42
   }
