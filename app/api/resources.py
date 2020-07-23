@@ -41,30 +41,16 @@ class SecureResourceOne(SecureResource):
         timestamp = datetime.utcnow().isoformat()
         return {'timestamp': timestamp}
 
-# my_functions = simpleeval.DEFAULT_FUNCTIONS.copy()
 
-@api_rest.route('/evaluate/<string:calculation>')
+@api_rest.route('/evaluate/<string:mode>/<string:expression>')
 class evaluate(Resource):
     """ Unsecure Resource Class: Inherit from Resource """
 
-    def get(self, calculation):
+    def get(self, mode, expression):
         # replace divide with /
-        calculation = re.sub(r'divide', '/', calculation)
-        # implicit * 
-        calculation = re.sub(r'(\d)(([(a-zA-Z])|(π)|(e))', r'\1*\2', calculation)
+        expression = re.sub(r'divide', '/', expression)
+        # implicit *
+        expression = re.sub(r'(\d)(([(a-zA-Z])|(π)|(e))', r'\1*\2', expression)
         s = mt.getInstance()
-        return round(s.se.eval(calculation),s.precision)
-
-@api_rest.route('/angleMode/<string:mode>')
-class changeAngleMode(Resource):
-    """ Unsecure Resource Class: Inherit from Resource """
-
-    def post(self, mode):
-        mt.getInstance().angleMode = mode
-
-@api_rest.route('/getAngleMode')
-class getAngleMode(Resource):
-    """ Unsecure Resource Class: Inherit from Resource """
-
-    def get(self):
-        return mt.getInstance().angleMode
+        s.angleMode = mode
+        return round(s.se.eval(expression), s.precision)

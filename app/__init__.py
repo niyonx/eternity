@@ -15,7 +15,7 @@ DEBUG = True
 # app = Flask(__name__)
 # app.config.from_object(__name__)
 
-app = Flask(__name__, static_folder='../dist/static')
+app = Flask(__name__, static_folder='../dist/', static_url_path='')
 app.register_blueprint(api_bp)
 # app.register_blueprint(client_bp)
 
