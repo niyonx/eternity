@@ -1,7 +1,7 @@
 <template>
   <div class="calculator">
     <div class="calculator-bar">
-      ETERNITY SCIENTIFIC CALCULATOR
+      {{title}}
     </div>
     <div class="calculator-display">{{expression || 0}}</div>
 
@@ -57,6 +57,7 @@
         <!-- <button class="calculator-btn notshow"></button> -->
       </div>
     </div>
+    <div class="lang" @click="changeLang">{{lang}}</div>
   </div>
 </template>
 
@@ -69,11 +70,13 @@ import $backend from '../backend'
     name: 'Calculator',
     data () {
       return {
+        title: 'ETERNITY SCIENTIFIC CALCULATOR',
         expression: '',
         angleMode: 'deg',
         resources: [],
         error: '',
-        ans: ''
+        ans: '',
+        lang: 'EN'
       }
     },
     methods: {
@@ -130,6 +133,15 @@ import $backend from '../backend'
           }).catch(error => {
             this.error = error.message
           })
+      },
+      changeLang(){
+        if (this.lang === 'EN'){
+          this.lang = 'FR';
+          this.title='CALCULATEUR SCIENTIFIQUE ETERNITY'
+        }else{
+          this.lang = 'EN';
+          this.title = 'ETERNITY SCIENTIFIC CALCULATOR'
+        }
       }
     }
   }
@@ -151,7 +163,19 @@ import $backend from '../backend'
     min-width: 280px;
     max-width: 480px;
   }
-
+  .calculator .lang{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #2E3A52;
+    position: fixed;
+    right: 50px;
+    bottom: 60px;
+    line-height: 50px;
+    text-align: center;
+    box-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.6);
+    cursor: pointer
+  }
   .calculator-bar {
     text-align: center;
     font-size: 0.9rem;
