@@ -9,14 +9,13 @@ flask-restX = "*"
 python-dotenv = "*"
 flask = "*"
 simpleeval = "*"
+flask_cors = "*"
 
 [dev-packages]
 pytest = "*"
 bumpversion = "*"
 pytest-sugar = "*"
 pytest-cov = "*"
-simpleeval = "*"
-flask_cors = "*"
 
 [requires]
 python_version = "3.6"
