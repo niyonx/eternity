@@ -1,4 +1,13 @@
 module.exports = {
+  outputDir: 'dist',
+  assetsDir: 'static',
+  baseUrl: IS_PRODUCTION
+  ? 'https://eternity-app.herokuapp.com/'
+  : '/',
+  // For Production, replace set baseUrl to CDN
+  // And set the CDN origin to `yourdomain.com/static`
+  // Whitenoise will serve once to CDN which will then cache
+  // and distribute
   devServer: {
     proxy: {
       '/api*': {
@@ -6,8 +15,5 @@ module.exports = {
         target: 'http://localhost:5000/'
       }
     }
-  },
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/eternity/'
-    : '/'
+  }
 }
