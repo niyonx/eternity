@@ -8,6 +8,7 @@ gunicorn = "==19.7.1"
 flask-restX = "*"
 python-dotenv = "*"
 flask = "*"
+simpleeval = "*"
 
 [dev-packages]
 pytest = "*"

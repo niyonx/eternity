@@ -1,0 +1,27 @@
+{
+  "name": "Eternity App",
+  "description": "",
+  "repository": "https://github.com/niyonx/eternity",
+  "logo": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/lg/57/pocket-calculator_1f5a9.png",
+  "keywords": ["flask", "vue"],
+  "env": {
+    "FLASK_ENV": {
+      "description": "Flask Enviroment",
+      "value": "production"
+    },
+    "SECRET": {
+      "description": "Flask Secret Key",
+      "value": "SuperSecretKey"
+    }
+  },
+  "addons": [
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
