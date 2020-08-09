@@ -62,89 +62,105 @@
 </template>
 
 <script>
-// import MathTool from '../utils/MathTool'
+
 import $backend from '../backend'
 
-/* eslint-disable */
-  export default {
-    name: 'Calculator',
-    data () {
-      return {
-        title: 'ETERNITY SCIENTIFIC CALCULATOR',
-        expression: '',
-        angleMode: 'deg',
-        resources: [],
-        error: '',
-        ans: '',
-        lang: 'EN'
+export default {
+  name: 'Calculator',
+  data () {
+    return {
+      title: 'ETERNITY SCIENTIFIC CALCULATOR',
+      expression: '',
+      angleMode: 'deg',
+      resources: [],
+      error: '',
+      ans: '',
+      lang: 'EN'
+    }
+  },
+  mounted () {
+    let self = this
+    document.onkeydown = function (event) {
+      if (event.key === 'Backspace') {
+        self.backspace()
+        return
+      }
+      if (event.key === 'Enter' || event.key === '=') {
+        self.equal()
+        return
+      }
+      const ALLOWEDKEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '*', '/']
+      if (ALLOWEDKEYS.indexOf(event.key) >= 0) {
+        self.expression += event.key
+      }
+    }
+  },
+  methods: {
+    clear () {
+      this.expression = ''
+    },
+    backspace () {
+      if (typeof this.expression === typeof 1) {
+        this.expression = ''
+      } else {
+        this.expression = this.expression.toString().slice(0, -1)
       }
     },
-    methods: {
-      clear () {
-        this.expression = ''
-      },
-      backspace () {
-        if (typeof this.expression === typeof 1) {
-          this.expression = ''
-        } else {
-          this.expression = this.expression.toString().slice(0, -1)
-        }
-      },
-      appendNum (e) {
-        if (typeof this.expression === typeof 1) {
-          this.expression = e
-        } else {
-          this.expression += e
-        }
-      },
-      appendOp (e) {
-          this.expression += e
-      },
-      equal () {
-        $backend.evaluate(this.expression, this.angleMode)
-          .then(responseData => {
-            this.expression = responseData;
-            this.ans = this.expression
-          }).catch(error => {
-            console.log(error)
-            this.error = error.message
-            this.expression = 'Syntax Error'
-          })
-      },
-      changeAngleMode () {
-        if (this.angleMode === 'deg') {
-          this.angleMode = 'rad'
-        } else {
-          this.angleMode = 'deg'
-        }
-      },
-      fetchResource () {
-        $backend.fetchResource()
-          .then(responseData => {
-            this.resources.push(responseData)
-          }).catch(error => {
-            this.error = error.message
-          })
-      },
-      fetchSecureResource () {
-        $backend.fetchSecureResource()
-          .then(responseData => {
-            this.resources.push(responseData)
-          }).catch(error => {
-            this.error = error.message
-          })
-      },
-      changeLang(){
-        if (this.lang === 'EN'){
-          this.lang = 'FR';
-          this.title='CALCULATEUR SCIENTIFIQUE ETERNITY'
-        }else{
-          this.lang = 'EN';
-          this.title = 'ETERNITY SCIENTIFIC CALCULATOR'
-        }
+    appendNum (e) {
+      if (typeof this.expression === typeof 1) {
+        this.expression = e
+      } else {
+        this.expression += e
+      }
+    },
+    appendOp (e) {
+      this.expression += e
+    },
+    equal () {
+      $backend.evaluate(this.expression, this.angleMode)
+        .then(responseData => {
+          this.expression = responseData
+          this.ans = this.expression
+        }).catch(error => {
+          console.log(error)
+          this.error = error.message
+          this.expression = 'Syntax Error'
+        })
+    },
+    changeAngleMode () {
+      if (this.angleMode === 'deg') {
+        this.angleMode = 'rad'
+      } else {
+        this.angleMode = 'deg'
+      }
+    },
+    fetchResource () {
+      $backend.fetchResource()
+        .then(responseData => {
+          this.resources.push(responseData)
+        }).catch(error => {
+          this.error = error.message
+        })
+    },
+    fetchSecureResource () {
+      $backend.fetchSecureResource()
+        .then(responseData => {
+          this.resources.push(responseData)
+        }).catch(error => {
+          this.error = error.message
+        })
+    },
+    changeLang () {
+      if (this.lang === 'EN') {
+        this.lang = 'FR'
+        this.title = 'CALCULATEUR SCIENTIFIQUE ETERNITY'
+      } else {
+        this.lang = 'EN'
+        this.title = 'ETERNITY SCIENTIFIC CALCULATOR'
       }
     }
   }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -163,7 +179,8 @@ import $backend from '../backend'
     min-width: 280px;
     max-width: 480px;
   }
-  .calculator .lang{
+
+  .calculator .lang {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -176,6 +193,7 @@ import $backend from '../backend'
     box-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.6);
     cursor: pointer
   }
+
   .calculator-bar {
     text-align: center;
     font-size: 0.9rem;
