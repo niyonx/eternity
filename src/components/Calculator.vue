@@ -89,7 +89,7 @@ export default {
         self.equal()
         return
       }
-      const ALLOWEDKEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '*', '/']
+      const ALLOWEDKEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '*', '/', '(', ')']
       if (ALLOWEDKEYS.indexOf(event.key) >= 0) {
         self.expression += event.key
       }
@@ -180,14 +180,19 @@ export default {
     max-width: 480px;
   }
 
+  @media screen and (max-width: 670px) {
+    .calculator .lang {
+      display: none;
+    }
+  }
   .calculator .lang {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background: #2E3A52;
     position: fixed;
-    right: 50px;
-    bottom: 60px;
+    right: 2rem;
+    bottom: 2rem;
     line-height: 50px;
     text-align: center;
     box-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.6);
