@@ -1,4 +1,4 @@
-# eternity (https://niyonx.github.io/eternity/#/)
+# eternity (https://eternity-app.herokuapp.com/)
 
 > A Vue.js project
 
